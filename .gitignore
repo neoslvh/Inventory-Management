@@ -1,0 +1,7 @@
+.vscode/
+__pycache__/
+*.pyc
+instance/
+.env
+invms.db
+migrations/*/__pycache__/

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<h4>Reports</h4>
+<ul>
+    <li><a href="/export/inventory.xlsx">Inventory Snapshot (Excel)</a></li>
+    <li><a href="/api/low-stock" target="_blank">Low Stock (JSON)</a></li>
+    <li><a href="/apidocs/" target="_blank">Swagger API Docs</a></li>
+</ul>
+{% endblock %}

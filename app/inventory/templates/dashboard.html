@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="card"><div class="card-body">
+            <h5 class="card-title">Stock by product</h5>
+            <canvas id="stockChart"></canvas>
+        </div></div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card"><div class="card-body">
+            <h6 class="card-title">Low stock alerts</h6>
+            {% if low %}
+                <ul class="list-group">
+                {% for p in low %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ p.name }}
+                        <span class="badge bg-danger">Below min</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">All good.</p>
+            {% endif %}
+        </div></div>
+        <a class="btn btn-outline-secondary mt-3" href="/export/inventory.xlsx">Export Excel</a>
+    </div>
+</div>
+{% endblock %}
+
+<!-- {% block scripts %}
+<script>
+const ctx = document.getElementById('stockChart');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: {{ labels | tojson }},
+    datasets: [{
+      label: 'Quantity',
+      data: {{ data | tojson }},
+      backgroundColor: 'rgba(54, 162, 235, 0.6)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+{% endblock %}
+ -->

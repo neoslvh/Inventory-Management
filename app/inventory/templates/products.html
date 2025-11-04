@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <form class="d-flex" method="get">
+        <input class="form-control me-2" name="q" value="{{ q }}" placeholder="Search name/SKU/barcode"/>
+        <button class="btn btn-outline-primary">Search</button>
+    </form>
+    <a class="btn btn-primary" href="/products/new">New</a>
+</div>
+<table class="table table-hover align-middle">
+    <thead><tr><th>Name</th><th>SKU</th><th>Barcode</th><th>Min</th><th></th></tr></thead>
+    <tbody>
+{% for p in items %}
+    <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.sku }}</td>
+        <td>{{ p.barcode or '-' }}</td>
+        <td>{{ p.min_stock }}</td>
+        <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="/products/{{p.id}}/edit">Edit</a></td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% endblock %}
