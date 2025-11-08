@@ -1,6 +1,124 @@
-body { background-color: #0b1116; color: #e8eef5; }
-.navbar { background-color: #111827 !important; }
-.card { background: #111827; border-color: #1f2937; }
-.table { color: #e5e7eb; }
-.table tr { border-color: #1f2937; }
-.btn-primary { background: #2563eb; border-color: #2563eb; }
+/* ====== GLOBAL COLOR PALETTE ====== */
+:root {
+  --bg-dark: #0b1116;
+  --surface-dark: #111827;
+  --border-dark: #1f2937;
+  --text-light: #e8eef5;
+  --text-muted: #9ca3af;
+  --accent-blue: #2563eb;
+  --accent-blue-hover: #1d4ed8;
+}
+
+/* ====== BASE STYLES ====== */
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ====== NAVBAR ====== */
+.navbar {
+  background-color: var(--surface-dark) !important;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+  color: var(--text-light) !important;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--accent-blue) !important;
+}
+
+/* ====== CARD ====== */
+.card {
+  background: var(--surface-dark);
+  border-color: var(--border-dark);
+  color: var(--text-light);
+  border-radius: 12px;
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid var(--border-dark);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* ====== TABLE ====== */
+.table {
+  color: var(--text-light);
+  border-color: var(--border-dark);
+}
+
+.table thead {
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+.table tr {
+  border-color: var(--border-dark);
+}
+
+.table-hover tbody tr:hover {
+  background-color: #1a2230;
+}
+
+/* ====== BUTTONS ====== */
+.btn-primary {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-blue-hover);
+  border-color: var(--accent-blue-hover);
+  transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.btn-outline-primary:hover {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+/* ====== FORM INPUTS ====== */
+.form-control {
+  background-color: #0d1219;
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+}
+
+.form-control:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+}
+
+/* ====== TABLE / CARD SHADOW ====== */
+.shadow-sm {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ====== FOOTER ====== */
+footer {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-dark);
+  margin-top: 2rem;
+}

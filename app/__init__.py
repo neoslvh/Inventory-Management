@@ -8,6 +8,8 @@ from .reports import reports_bp
 from .docs.swagger import register_swagger
 import os
 from .models.user import User, Role
+from sqlalchemy import or_
+
 
 
 
@@ -47,10 +49,16 @@ def create_app():
     @app.before_request
     def seed_admin():
         db.create_all()
-        if not User.query.filter_by(email=os.getenv("ADMIN_EMAIL")).first():
-            u = User.create_admin(os.getenv("ADMIN_EMAIL"), os.getenv("ADMIN_PASSWORD"))
-            db.session.add(u)
-            db.session.commit()
+        admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
+        admin_password = os.getenv("ADMIN_PASSWORD", "123456")
+
+        existing = User.query.filter(
+        or_(User.username == admin_email, User.email == admin_email)
+        ).first()
+
+
+        if not existing:
+            User.create_admin(admin_email, admin_password)
     
     register_admin(app)
     admin.init_app(app)

@@ -1,12 +1,30 @@
-{% extends 'base.html' %}
-{% block title %}Login{% endblock %}
-{% block content %}
-<div class="container mt-4" style="max-width: 420px;">
-<h4>Login</h4>
-<form method="POST">{{ form.hidden_tag() }}
-<div class="mb-3">{{ form.email.label }} {{ form.email(class='form-control') }}</div>
-<div class="mb-3">{{ form.password.label }} {{ form.password(class='form-control') }}</div>
-{{ form.submit(class='btn btn-primary w-100') }}
+<form method="POST" action="{{ url_for('auth.login') }}">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3">
+    {{ form.username.label(class="form-label text-light fw-semibold") }}
+    {{ form.username(class="form-control form-control-lg", placeholder="Enter your username") }}
+    {% if form.username.errors %}
+      <div class="text-danger small">{{ form.username.errors[0] }}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-4">
+    {{ form.password.label(class="form-label text-light fw-semibold") }}
+    {{ form.password(class="form-control form-control-lg", placeholder="Enter your password") }}
+    {% if form.password.errors %}
+      <div class="text-danger small">{{ form.password.errors[0] }}</div>
+    {% endif %}
+  </div>
+
+  <div class="d-grid mb-3">
+    <button type="submit" class="btn btn-primary btn-lg fw-semibold">Login</button>
+  </div>
+
+  <p class="text-center text-light">
+    Don’t have an account?
+    <a href="{{ url_for('auth.register') }}" class="text-decoration-none text-info fw-semibold">
+      Register here
+    </a>
+  </p>
 </form>
-</div>
-{% endblock %}

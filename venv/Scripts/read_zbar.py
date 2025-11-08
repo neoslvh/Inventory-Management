@@ -1,4 +1,4 @@
-#!D:\ĐồÁnPython\InventoryManagement\venv\Scripts\python.exe
+#!C:\Users\ASUS\Documents\Inventory-Management\venv\Scripts\python.exe
 from __future__ import print_function
 
 import argparse

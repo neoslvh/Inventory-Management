@@ -10,6 +10,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-admin = Admin(name="Inventory Admin", template_mode="bootstrap4");
-socketio = SocketIO(async_mode="threading");
+admin = Admin(name='Inventory Admin', template_mode='bootstrap4')
+socketio = SocketIO()
 cache = Cache()

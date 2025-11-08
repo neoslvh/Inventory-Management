@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Register - Inventory Management{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow border-0 rounded-4 login-card">
+        <div class="card-body p-5">
+          <h3 class="text-center mb-4 fw-bold text-light">Register</h3>
+
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+          <form method="POST" action="{{ url_for('auth.register') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+              {{ form.username.label(class="form-label text-light fw-semibold") }}
+              {{ form.username(class="form-control form-control-lg", placeholder="Enter your username") }}
+              {% if form.username.errors %}
+                <div class="text-danger small">{{ form.username.errors[0] }}</div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              {{ form.email.label(class="form-label text-light fw-semibold") }}
+              {{ form.email(class="form-control form-control-lg", placeholder="Enter your email (optional)") }}
+              {% if form.email.errors %}
+                <div class="text-danger small">{{ form.email.errors[0] }}</div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              {{ form.password.label(class="form-label text-light fw-semibold") }}
+              {{ form.password(class="form-control form-control-lg", placeholder="Enter your password") }}
+              {% if form.password.errors %}
+                <div class="text-danger small">{{ form.password.errors[0] }}</div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              {{ form.confirm_password.label(class="form-label text-light fw-semibold") }}
+              {{ form.confirm_password(class="form-control form-control-lg", placeholder="Confirm password") }}
+              {% if form.confirm_password.errors %}
+                <div class="text-danger small">{{ form.confirm_password.errors[0] }}</div>
+              {% endif %}
+            </div>
+
+            <div class="d-grid mb-3">
+              <button type="submit" class="btn btn-primary btn-lg fw-semibold">Register</button>
+            </div>
+
+            <p class="text-center text-light">
+              Already have an account?
+              <a href="{{ url_for('auth.login') }}" class="text-decoration-none text-info fw-semibold">
+                Login here
+              </a>
+            </p>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

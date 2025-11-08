@@ -47,23 +47,19 @@ def products():
     return render_template('./products.html', items=items, q=q)
 
 
-@inventory_bp.route('/products/new', methods=['GET','POST'])
+@inventory_bp.route('/products/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
-def product_new():
-    form = ProductForm()
+def product_edit(id):
+    product = Product.query.get_or_404(id)
+    form = ProductForm(obj=product)
     if form.validate_on_submit():
-        data = form.data.copy()
-        data.pop('submit', None)
-        data.pop('csrf_token', None)
-        new_product = Product(**data)
-        db.session.add(new_product)
+        form.populate_obj(product)
         db.session.commit()
-        flash('Created', 'success')
+        flash('Product updated', 'success')
         return redirect(url_for('inventory.products'))
-    return render_template('./product_form.html', form=form, action='New')
+    return render_template('product_form.html', form=form, action='Edit')
 
-
-@inventory_bp.route('/products/<int:id>/edit', methods=['GET','POST'])
+@inventory_bp.route('/movements', methods=['GET', 'POST'])
 @login_required
 def movements():
     if request.method == 'POST':
@@ -75,26 +71,25 @@ def movements():
         batch_no = request.form.get('batch_no')
         unit_cost = request.form.get('unit_cost')
 
-
         move = StockMovement(
-        type=mtype, product_id=product_id, quantity=qty,
-        from_warehouse_id=wh_from or None, to_warehouse_id=wh_to or None,
-        batch_no=batch_no or None, unit_cost=unit_cost or None
+            type=mtype, product_id=product_id, quantity=qty,
+            from_warehouse_id=wh_from or None, to_warehouse_id=wh_to or None,
+            batch_no=batch_no or None, unit_cost=unit_cost or None
         )
         db.session.add(move)
 
-
-        # Simple stock application (FIFO/LIFO can be toggled via query param or config)
+        # Update inventory based on movement type
         if mtype == 'IN':
-            inv = InventoryItem(product_id=product_id, warehouse_id=wh_to, batch_no=batch_no, quantity=qty, unit_cost=unit_cost)
+            inv = InventoryItem(
+                product_id=product_id, warehouse_id=wh_to,
+                batch_no=batch_no, quantity=qty, unit_cost=unit_cost
+            )
             db.session.add(inv)
         elif mtype == 'OUT':
-        # naive FIFO: consume oldest items first
             remaining = qty
             lots = InventoryItem.query.filter_by(product_id=product_id).order_by(InventoryItem.created_at.asc()).all()
             for lot in lots:
-                if remaining <= 0:
-                    break
+                if remaining <= 0: break
                 take = min(lot.quantity, remaining)
                 lot.quantity -= take
                 remaining -= take
@@ -105,21 +100,22 @@ def movements():
                 if remaining <= 0: break
                 take = min(lot.quantity, remaining)
                 lot.quantity -= take
-        # create new lot in destination warehouse with same batch
-                db.session.add(InventoryItem(product_id=product_id, warehouse_id=wh_to, batch_no=lot.batch_no, quantity=take, unit_cost=lot.unit_cost))
+                db.session.add(
+                    InventoryItem(
+                        product_id=product_id, warehouse_id=wh_to,
+                        batch_no=lot.batch_no, quantity=take, unit_cost=lot.unit_cost
+                    )
+                )
                 remaining -= take
 
-
         db.session.commit()
-        # from ..extensions import socketio
-        # socketio.emit('stock_updated', {'product_id': product_id})
         flash('Movement recorded', 'success')
         return redirect(url_for('inventory.movements'))
 
     products = Product.query.order_by(Product.name).all()
     warehouses = Warehouse.query.order_by(Warehouse.name).all()
     moves = StockMovement.query.order_by(StockMovement.created_at.desc()).limit(50).all()
-    return render_template('./movements.html', products=products, warehouses=warehouses, moves=moves)
+    return render_template('movements.html', products=products, warehouses=warehouses, moves=moves)
 
 @inventory_bp.route('/scan')
 @login_required
