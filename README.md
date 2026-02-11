@@ -1,4 +1,4 @@
-Inventory Management System
+# Inventory Management System
 
 
 
@@ -230,9 +230,10 @@ Full Docker Compose production template
 
 MIT License (recommended for open-source portfolio projects)
 
+=================================================================================
 
 
-Hệ thống Quản lý Kho (Inventory Management System)
+# Hệ thống Quản lý Kho (Inventory Management System)
 
 Một hệ thống quản lý tồn kho và mua hàng đa kho dựa trên Flask, sẵn sàng cho môi trường production, cung cấp REST API, tài liệu Swagger, cập nhật thời gian thực và cơ chế cache bằng Redis.
 
